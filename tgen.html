@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TGEN</title>
+        <script type="text/javascript">
+            let lines = [];
+
+            async function loadFile(filePath) {
+                try {
+                    const response = await fetch(filePath);
+                    const text = await response.text();
+                    lines = text.split('\n');
+                } catch (error) {
+                    console.error('Error reading file:', error);
+                }
+            }
+
+            function getRandomLine() {
+                if (lines.length === 0) {
+                    console.error('File not loaded or empty.');
+                    return null;
+                }
+                const randomIndex = Math.floor(Math.random() * lines.length);
+                return lines[randomIndex].toUpperCase();
+            }
+
+            // Attribution: Code was written by MS Copilot.
+            window.onload = () => {
+                loadFile('titles.txt');
+            };
+    </script>
+    </head>
+
+    <body>
+        <h1>Tool Generator (TGEN)</h1>
+        <p>This randomly picks a name for your new tool from the <a href="https://dumps.wikimedia.org">Wikipedia Dataset</a> that is either 3 or 4 characters, and is not already an initialism. The filtered list is <a href="titles.txt">here</a>. Note that there is no profanity filter.</p>
+        <button type="button" onclick="generate()">Generate Tool!</button>
+        <a id="article" target="_blank" rel="noopener noreferrer"><h2 id="name"></h2></a>
+    </body>
+</html>
+
+<script type="text/javascript">
+function generate(){ 
+    var name = getRandomLine();
+    document.getElementById("name").innerHTML = name.toUpperCase();
+    document.getElementById("article").href = "https://en.wikipedia.org/wiki/" + name;
+}
+</script>
